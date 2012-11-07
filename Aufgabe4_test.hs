@@ -6,6 +6,8 @@ import Test.QuickCheck
 import Test.QuickCheck.All
 
 
+-- helper type to make sure arguments to test are always natural numbers
+-- (ie >= 0)
 newtype Na a = Na a
     deriving (Show)
 
@@ -14,7 +16,8 @@ instance (Integral a, Arbitrary a) => Arbitrary (Na a) where
       a <- arbitrary
       return $! Na (if a >= 0 then a else (-a))
 
-
+-- helper type to make sure arguments to test are always positive numbers
+-- (ie > 0)
 newtype Pos a = Pos a
     deriving (Show)
 
@@ -23,11 +26,6 @@ instance (Integral a, Arbitrary a) => Arbitrary (Pos a) where
       a <- arbitrary
       return $! Pos (if a > 0 then a else (-a + 1))
 
-
-myLast :: [a] -> a
-myLast [x] = x
-myLast (_:xs) = myLast xs
-myLast [] = error "empy"
 
 -- integer to nat
 i2n :: Integer -> Nat
@@ -39,6 +37,7 @@ n2i :: Nat -> Integer
 n2i Z = 0
 n2i (S n) = 1 + n2i n
 
+-- Pair to integer
 np2i :: NatPair -> Integer
 np2i (a, b) = n2i a - n2i b
 
