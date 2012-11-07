@@ -22,3 +22,11 @@ Now, make sure that your code exports all functions (put `module Aufgabe4 where`
 ```
 runhaskell Aufgabe4_test.hs
 ```
+
+(in this case Aufgabe4.lhs needs to somewhere on the search path, easiest way is to put it into the same directory)
+
+
+Contributions
+=============
+
+Everybody is welcome to contribute, just fork, edit and make a pull request!
