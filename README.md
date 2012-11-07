@@ -1,0 +1,24 @@
+Installation
+============
+
+First, you need to install QuickCheck from cabal.
+
+If you don't have cabal, get it from your repositories:
+
+```sudo aptitude install cabal-install```
+
+Then, update your cache and install QuickCheck:
+
+```
+cabal update
+cabal install QuickCheck
+```
+
+Usage
+=====
+
+Now, make sure that your code exports all functions (put `module Aufgabe4 where` at the top), then run the test script you want:
+
+```
+runhaskell Aufgabe4_test.hs
+```
