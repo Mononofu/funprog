@@ -3,6 +3,7 @@
 import Test.HUnit
 import Test.QuickCheck
 import Test.QuickCheck.All
+import Data.List
 
 
 import Aufgabe6
@@ -44,6 +45,28 @@ tests = TestList [TestLabel "Test 8" test8, TestLabel "Test 9" test9,
                   TestLabel "Test 889" test889, TestLabel "Test 1899" test1899,
                   TestLabel "Test 4884" test4884, TestLabel "Test 5999" test5999]
 
+
+digit2num 'I' = 1
+digit2num 'V' = 5
+digit2num 'X' = 10
+digit2num 'L' = 50
+digit2num 'C' = 100
+digit2num 'D' = 500
+digit2num 'M' = 1000
+
+roman2int r = parse (Just 0) $ reverse r
+  where
+    parse _ [] = 0
+    parse highest (d:ds)
+      | index < highest   = (-1 * digit2num d) + parse index ds
+      | otherwise         = (digit2num d) + parse index ds
+      where index       = findIndex (== d) romanDigits
+            romanDigits = "IVXLCDM"
+
+-- this only tests if the conversion keeps the correct number, not if the style
+-- rules are followed
+prop_roman_conversion (Na a) = a == roman2int (show (dec2nat a))
+
 -- helper type to make sure arguments to test are always natural numbers
 -- (ie >= 0)
 newtype Na a = Na a
@@ -52,7 +75,7 @@ newtype Na a = Na a
 instance (Integral a, Arbitrary a) => Arbitrary (Na a) where
     arbitrary = do
       a <- arbitrary
-      return $! Na (a `mod` 20)
+      return $! Na (a `mod` 20)   -- limited size because *, +, - are slow otherwise
 
 -- helper type to make sure arguments to test are always positive numbers
 -- (ie > 0)
