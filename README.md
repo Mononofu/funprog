@@ -14,6 +14,11 @@ cabal update
 cabal install QuickCheck
 ```
 
+To run the tests for Aufgabe 6, you need to install HUnit:
+
+```cabal install HUnit```
+
+
 Usage
 =====
 
