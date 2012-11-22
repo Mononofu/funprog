@@ -32,7 +32,7 @@ prop_testAbs a = n2i (nbAbs (i2n a)) == abs a
 
 prop_testPlus a b = n2i (nbPlus (i2n a) (i2n b)) == a + b
 
-prop_testTime a b = n2i (nbTimes (i2n a) (i2n b)) == a * b
+prop_testTimes a b = n2i (nbTimes (i2n a) (i2n b)) == a * b
 
 
 -- quickCheckAll generates test cases for all 'prop_*' properties
