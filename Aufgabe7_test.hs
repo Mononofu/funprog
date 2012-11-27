@@ -15,9 +15,21 @@ test5 = TestCase (assertEqual "" [] (solve ([42],21)))
 test6 = TestCase (assertEqual "" [] (solve ([3,2],42)))
 
 
+
+db = [
+    ("Matrix", "Andy Wachowski", ["Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss"], 1999, ScienceFiction, 10)
+  , ("Matrix", "Andy Wachowski", ["Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss"], 1999, ScienceFiction, 10)
+  , ("Matrix", "Andy Wachowski", ["Laurence Fishburne", "Keanu Reeves", "Carrie-Anne Moss"], 1999, ScienceFiction, 10)
+  , ("Blade Runner", "Ridley Scott", ["Harrison Ford", "Rutger Hauer", "Sean Young "], 1982, ScienceFiction, 10)
+  ]
+
+test10 = TestCase (assertEqual "duplicates not removed" (length db) (2 + length (rm_dup db)))
+test11 = TestCase (assertEqual "" (get_tad db 1982) [("Blade Runner", ["Harrison Ford", "Rutger Hauer", "Sean Young "], 1982)])
+
 tests = TestList [TestLabel "Test 1" test1, TestLabel "Test 2" test2,
                   TestLabel "Test 3" test3, TestLabel "Test 4" test4,
-                  TestLabel "Test 5" test5, TestLabel "Test 6" test6]
+                  TestLabel "Test 5" test5, TestLabel "Test 6" test6,
+                  TestLabel "rm_dup" test10, TestLabel "get_tad" test11]
 
 calc :: [Operators] -> [Integer] -> Integer
 calc ops (n:ns) = calc' ops ns n
@@ -38,7 +50,7 @@ newtype Values = Values ([Integer], [Operators])
   deriving Show
 
 instance Arbitrary Values where
-  arbitrary = do 
+  arbitrary = do
     n <- choose(1, 10) :: Gen Int
     ns <- forM [1..n] $ \_ -> do
       i <- choose(1, 40) :: Gen Integer
