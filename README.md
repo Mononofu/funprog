@@ -7,16 +7,13 @@ If you don't have cabal, get it from your repositories:
 
 ```sudo aptitude install cabal-install```
 
-Then, update your cache and install QuickCheck:
+Then, update your cache and install QuickCheck and HUnit:
 
 ```
 cabal update
 cabal install QuickCheck
+cabal install HUnit
 ```
-
-To run the tests for Aufgabe 6, you need to install HUnit:
-
-```cabal install HUnit```
 
 
 Usage
