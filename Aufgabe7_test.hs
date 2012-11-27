@@ -1,4 +1,9 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 import Test.HUnit
+import Test.QuickCheck
+import Test.QuickCheck.All
+import Control.Monad (liftM3, forM)
 
 import Aufgabe7
 
@@ -23,4 +28,29 @@ calc ops (n:ns) = calc' ops ns n
           Times -> calc' ops ns (acc * n)
           Div   -> calc' ops ns (acc `div` n)
 
-main = runTestTT tests
+
+
+instance Arbitrary Operators where
+  arbitrary = elements [Plus, Times, Minus, Div]
+
+
+newtype Values = Values ([Integer], [Operators])
+  deriving Show
+
+instance Arbitrary Values where
+  arbitrary = do 
+    n <- choose(1, 10) :: Gen Int
+    ns <- forM [1..n] $ \_ -> do
+      i <- choose(1, 40) :: Gen Integer
+      return i
+    ops <- forM [1..(n-1)] $ \_ -> do
+      op <- arbitrary
+      return op
+    return (Values (ns, ops))
+
+prop_solve (Values (ns, ops)) = calc (solve (ns, n)) ns == n
+  where n = calc ops ns
+
+main = do
+  $(quickCheckAll)
+  runTestTT tests
