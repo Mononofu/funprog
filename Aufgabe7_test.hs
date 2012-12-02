@@ -30,51 +30,59 @@ db = [
   ]
 
 
-test10 = TestCase (assertEqual "duplicates not removed" (length db_with_dup) (2 + length (rm_dup db_with_dup)))
-test11 = TestCase (assertEqual "" (get_tad db 1982) [("Blade Runner", ["Harrison Ford", "Rutger Hauer", "Sean Young "], 1982)])
-test_rtd = TestCase (assertEqual "" (get_rtd db) [("Andy Wachowski", "Matrix", 1999), 
+test10 = TestCase (assertEqual "duplicates not removed" (2 + length (rm_dup db_with_dup)) (length db_with_dup))
+test11 = TestCase (assertEqual "" [("Blade Runner", ["Harrison Ford", "Rutger Hauer", "Sean Young "], 1982)] (get_tad db 1982))
+test_rtd = TestCase (assertEqual "" [("Andy Wachowski", "Matrix", 1999), 
                                                   ("Andy Wachowski", "The Matrix Reloaded", 2003),
                                                   ("Ridley Scott", "Blade Runner", 1982),
-                                                  ("Clint Eastwood", "Gran Torino", 2008)])
-test_rtg1 = TestCase (assertEqual "" (get_rtg db) [("Clint Eastwood", "Gran Torino", Thriller)])
-test_rtg2 = TestCase (assertEqual "" (get_rtg []) [])
+                                                  ("Clint Eastwood", "Gran Torino", 2008)]
+                                    (get_rtd db))
+test_rtg1 = TestCase (assertEqual "" [("Clint Eastwood", "Gran Torino", Thriller)] (get_rtg db))
+test_rtg2 = TestCase (assertEqual "" [] (get_rtg []))
 
-test_atr1 = TestCase (assertEqual "" (get_atr db "Keanu Reeves") [("Keanu Reeves", "Matrix", 1999),
-                                                                  ("Keanu Reeves", "The Matrix Reloaded", 2003)])
-test_atr2 = TestCase (assertEqual "" (get_atr [] "Keanu Reeves") [])
-test_atr3 = TestCase (assertEqual "" (get_atr db "Quentin Tarantino") [])
+test_atr1 = TestCase (assertEqual "" [("Keanu Reeves", "Matrix", 1999),
+                                      ("Keanu Reeves", "The Matrix Reloaded", 2003)]
+                                     (get_atr db "Keanu Reeves"))
+test_atr2 = TestCase (assertEqual "" [] (get_atr [] "Keanu Reeves"))
+test_atr3 = TestCase (assertEqual "" [] (get_atr db "Quentin Tarantino"))
 
-test_dbgri1 = TestCase (assertEqual "" (upd_dbgri db ScienceFiction "Andy Wachowski" 10) 
+test_dbgri1 = TestCase (assertEqual "" 
             [("Matrix", "Andy Wachowski", ["Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss"], 1999, ScienceFiction, 20),
             ("The Matrix Reloaded", "Andy Wachowski", ["Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss"], 2003, ScienceFiction, 20),
             ("Blade Runner", "Ridley Scott", ["Harrison Ford", "Rutger Hauer", "Sean Young "], 1982, ScienceFiction, 10),
-            ("Gran Torino", "Clint Eastwood", ["Clint Eastwood", "Bee Vang"], 2008, Thriller, 12)])
-test_dbgri2 = TestCase (assertEqual "" (upd_dbgri db ScienceFiction "Andy Wachowski" (-10)) 
+            ("Gran Torino", "Clint Eastwood", ["Clint Eastwood", "Bee Vang"], 2008, Thriller, 12)]
+            (upd_dbgri db ScienceFiction "Andy Wachowski" 10) )
+test_dbgri2 = TestCase (assertEqual "" 
             [("Matrix", "Andy Wachowski", ["Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss"], 1999, ScienceFiction, 1),
             ("The Matrix Reloaded", "Andy Wachowski", ["Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss"], 2003, ScienceFiction, 1),
             ("Blade Runner", "Ridley Scott", ["Harrison Ford", "Rutger Hauer", "Sean Young "], 1982, ScienceFiction, 10),
-            ("Gran Torino", "Clint Eastwood", ["Clint Eastwood", "Bee Vang"], 2008, Thriller, 12)])
+            ("Gran Torino", "Clint Eastwood", ["Clint Eastwood", "Bee Vang"], 2008, Thriller, 12)]
+             (upd_dbgri db ScienceFiction "Andy Wachowski" (-10)))
 
-test_upd_dbad1 = TestCase (assertEqual "" (upd_dbad db "Keanu Reeves" 1990) 
+test_upd_dbad1 = TestCase (assertEqual "" 
             [("Blade Runner", "Ridley Scott", ["Harrison Ford", "Rutger Hauer", "Sean Young "], 1982, ScienceFiction, 10),
-            ("Gran Torino", "Clint Eastwood", ["Clint Eastwood", "Bee Vang"], 2008, Thriller, 12)])
-test_upd_dbad2 = TestCase (assertEqual "" (upd_dbad db "Keanu Reeves" 2000) 
+            ("Gran Torino", "Clint Eastwood", ["Clint Eastwood", "Bee Vang"], 2008, Thriller, 12)]
+            (upd_dbad db "Keanu Reeves" 1990) )
+test_upd_dbad2 = TestCase (assertEqual "" 
             [("Matrix", "Andy Wachowski", ["Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss"], 1999, ScienceFiction, 10),
             ("Blade Runner", "Ridley Scott", ["Harrison Ford", "Rutger Hauer", "Sean Young "], 1982, ScienceFiction, 10),
-            ("Gran Torino", "Clint Eastwood", ["Clint Eastwood", "Bee Vang"], 2008, Thriller, 12)])
+            ("Gran Torino", "Clint Eastwood", ["Clint Eastwood", "Bee Vang"], 2008, Thriller, 12)]
+            (upd_dbad db "Keanu Reeves" 2000) )
 
 
-test_dbda1 = TestCase (assertEqual "" (get_dbda db 2000 "Keanu Reeves") [("Blade Runner", "Ridley Scott", ["Harrison Ford", "Rutger Hauer", "Sean Young "], 1982, ScienceFiction, 10)])
-test_dbda2 = TestCase (assertEqual "" (get_dbda db 2009 "Keanu Reeves") 
+test_dbda1 = TestCase (assertEqual "" [("Blade Runner", "Ridley Scott", ["Harrison Ford", "Rutger Hauer", "Sean Young "], 1982, ScienceFiction, 10)] (get_dbda db 2000 "Keanu Reeves"))
+test_dbda2 = TestCase (assertEqual "" 
             [("Blade Runner", "Ridley Scott", ["Harrison Ford", "Rutger Hauer", "Sean Young "], 1982, ScienceFiction, 10),
-            ("Gran Torino", "Clint Eastwood", ["Clint Eastwood", "Bee Vang"], 2008, Thriller, 12)])
+            ("Gran Torino", "Clint Eastwood", ["Clint Eastwood", "Bee Vang"], 2008, Thriller, 12)]
+            (get_dbda db 2009 "Keanu Reeves") )
             
 
-test_sort_dbj = TestCase (assertEqual "" (sort_dbj db) 
+test_sort_dbj = TestCase (assertEqual "" 
             [("Gran Torino", "Clint Eastwood", ["Clint Eastwood", "Bee Vang"], 2008, Thriller, 12),
             ("The Matrix Reloaded", "Andy Wachowski", ["Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss"], 2003, ScienceFiction, 10),
             ("Matrix", "Andy Wachowski", ["Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss"], 1999, ScienceFiction, 10),
-            ("Blade Runner", "Ridley Scott", ["Harrison Ford", "Rutger Hauer", "Sean Young "], 1982, ScienceFiction, 10)])
+            ("Blade Runner", "Ridley Scott", ["Harrison Ford", "Rutger Hauer", "Sean Young "], 1982, ScienceFiction, 10)]
+            (sort_dbj db) )
 
 
 
@@ -94,7 +102,7 @@ db_sorted_genre = [
     ("SF M2", "Res C", [], 1999, ScienceFiction, 10),
     ("SF M1", "Res X", [], 1999, ScienceFiction, 10),
     ("Comedy M1", "Res A", [], 1999, Comedy, 10)]
-test_sort_dbgr = TestCase (assertEqual "" (sort_dbgr db_genre) db_sorted_genre)
+test_sort_dbgr = TestCase (assertEqual "" db_sorted_genre (sort_dbgr db_genre))
 
 tests = TestList [TestLabel "Test 1" test1, TestLabel "Test 2" test2,
                   TestLabel "Test 3" test3, TestLabel "Test 4" test4,
