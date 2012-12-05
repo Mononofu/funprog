@@ -38,12 +38,32 @@ test1899 = TestCase (assertEqual "" "MDCCCIC" (show (dec2nat 1899)))
 test4884 = TestCase (assertEqual "" "MMMMDCCCLXXXIV" (show (dec2nat 4884)))
 test5999 = TestCase (assertEqual "" "MMMMMIM" (show (dec2nat 5999)))
 
+-- official test 
+testHundred = TestCase (assertEqual "" [] (let z = Z : [S x | x <- z] 
+  in [i | (i,r) <- zip[10..99] ["X","XI","XII","XIII","XIV","XV","XVI","XVII",
+    "XVIII","XIX","XX","XXI","XXII","XXIII","XXIV","XXV","XXVI","XXVII","XXVIII",
+    "XXIX","XXX","XXXI","XXXII","XXXIII","XXXIV","XXXV","XXXVI","XXXVII","XXXVIII",
+    "XXXIX","XL","XLI","XLII","XLIII","XLIV","XLV","XLVI","XLVII","XLVIII","IL",
+    "L","LI","LII","LIII","LIV","LV","LVI","LVII","LVIII","LIX","LX","LXI","LXII",
+    "LXIII","LXIV","LXV","LXVI","LXVII","LXVIII","LXIX","LXX","LXXI","LXXII",
+    "LXXIII","LXXIV","LXXV","LXXVI","LXXVII","LXXVIII","LXXIX","LXXX","LXXXI",
+    "LXXXII","LXXXIII","LXXXIV","LXXXV","LXXXVI","LXXXVII","LXXXVIII","LXXXIX",
+    "XC","XCI","XCII","XCIII","XCIV","XCV","XCVI","XCVII","XCVIII","IC"],
+    r /= show (z !! i)]) )
+
+testSome = TestCase (assertEqual "" ["CD","CCIC","XCVIII","XCV","XIX","XXXVIII",
+  "LXXXIV","LXXXIX","DCCCLXXXIX"]
+  (let z = Z : [S x|x<-z] 
+   in [show (z!!i)|i<-[400,299,98,95,19,38,84,89,889]]) )
+
+
 tests = TestList [TestLabel "Test 8" test8, TestLabel "Test 9" test9,
                   TestLabel "Test 19" test19, TestLabel "Test 39" test39,
                   TestLabel "Test 84" test84, TestLabel "Test89" test89,
                   TestLabel "Test 98" test98, TestLabel "Test 99" test99,
                   TestLabel "Test 889" test889, TestLabel "Test 1899" test1899,
-                  TestLabel "Test 4884" test4884, TestLabel "Test 5999" test5999]
+                  TestLabel "Test 4884" test4884, TestLabel "Test 5999" test5999,
+                  TestLabel "Test 10.99" testHundred, TestLabel "Test some" testSome]
 
 
 digit2num 'I' = 1
