@@ -19,19 +19,27 @@ connections = [(Air "Austria" "Germany" 2),
                (Rail "Austria" "Germany" 10),
                (Air "Germany" "Spain" 3),
                (Sea "Spain" "UK" 15),
-               (Road "Canada" "US" 5)
+               (Road "Canada" "US" 5),
+               (Air "Austria" "UK" 3),
+               (Road "Hungary" "Austria" 2),
+               (Road "Hungary" "Romania" 10),
+               (Road "Romania" "Bulgaria" 8)
   ]
 
 test10 = TestCase (assertEqual "" True (isRoute connections "Austria" "Spain"))
 test11 = TestCase (assertEqual "" True (isRoute connections "Austria" "UK"))
 test12 = TestCase (assertEqual "" False (isRoute connections "US" "UK"))
+test13 = TestCase (assertEqual "" True (isRoute connections "Spain" "Bulgaria"))
+
+test20 = TestCase (assertEqual "" [] (yieldRoute connections "US" "UK"))
 
 tests = TestList [TestLabel "Test 1" test1, TestLabel "Test 2" test2,
                   TestLabel "Test 3" test3, TestLabel "Test 4" test4,
                   TestLabel "Test 5" test5, TestLabel "Test 6" test6,
                   TestLabel "Test 7" test7,
                   TestLabel "isRoute" test10, TestLabel "isRoute" test11,
-                  TestLabel "isRoute" test12]
+                  TestLabel "isRoute" test12, TestLabel "isRoute" test13,
+                  TestLabel "yieldRoute" test20]
 
 
 main = do
