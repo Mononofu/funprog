@@ -22,9 +22,13 @@ connections = [(Air "Austria" "Germany" 2),
                (Road "Canada" "US" 5),
                (Air "Austria" "UK" 3),
                (Road "Hungary" "Austria" 2),
+               (Air "Austria" "Bulgaria" 4),
                (Road "Hungary" "Romania" 10),
                (Road "Romania" "Bulgaria" 8)
   ]
+
+getIternaryTime (Route (_, time)) = time
+getIternaryTime _ = 0
 
 test10 = TestCase (assertEqual "" True (isRoute connections "Austria" "Spain"))
 test11 = TestCase (assertEqual "" True (isRoute connections "Austria" "UK"))
@@ -33,13 +37,21 @@ test13 = TestCase (assertEqual "" True (isRoute connections "Spain" "Bulgaria"))
 
 test20 = TestCase (assertEqual "" [] (yieldRoute connections "US" "UK"))
 
+test30 = TestCase (assertEqual "" 5 (getIternaryTime (yieldFastestRoute connections "Austria" "Spain")))
+
+test40 = TestCase (assertEqual "" True (isFeelGoodRoute connections "Austria" "Bulgaria" 0))
+test41 = TestCase (assertEqual "" False (isFeelGoodRoute connections "Austria" "UK" 0))
+
+
 tests = TestList [TestLabel "Test 1" test1, TestLabel "Test 2" test2,
                   TestLabel "Test 3" test3, TestLabel "Test 4" test4,
                   TestLabel "Test 5" test5, TestLabel "Test 6" test6,
                   TestLabel "Test 7" test7,
                   TestLabel "isRoute" test10, TestLabel "isRoute" test11,
                   TestLabel "isRoute" test12, TestLabel "isRoute" test13,
-                  TestLabel "yieldRoute" test20]
+                  TestLabel "yieldRoute" test20,
+                  TestLabel "yieldFastestRoute" test30,
+                  TestLabel "isFeelGoodRoute" test40, TestLabel "isFeelGoodRoute" test41]
 
 
 main = do
