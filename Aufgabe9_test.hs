@@ -31,8 +31,49 @@ completeConnections = [
                (Air "Canada" "US" 2)
   ]
 
+roundConnections = [
+  (Air "China" "Japan" 3),
+  (Air "China" "India" 10),
+  (Air "India" "Australia" 8),
+  (Air "Australia" "Japan" 5)]
+
 getIternaryTime (Route (_, time)) = time
 getIternaryTime _ = 0
+
+test_yieldUnreachable1 = TestCase (assertEqual ""
+  ["Canada", "US"]
+  (yieldUnreachable connections "Austria"))
+
+test_yieldUnreachable2 = TestCase (assertEqual ""
+  ["Austria","Germany","Spain","UK","Hungary","Bulgaria","Romania"]
+  (yieldUnreachable connections "US"))
+
+-- assuming that the start country should be part of the reachable list too
+test_yieldGroundReachable1 = TestCase (assertEqual ""
+  ["Austria","Germany","Hungary","Romania","Bulgaria"]
+  (yieldGroundReachable connections "Austria"))
+
+test_yieldGroundReachable2 = TestCase (assertEqual ""
+  ["Canada","US"]
+  (yieldGroundReachable connections "US"))
+
+
+test_isRoundTrip1 = TestCase (assertEqual ""
+  True
+  (isRoundTrip [(Air "Japan" "China" 5)] "Japan"))
+
+test_isRoundTrip2 = TestCase (assertEqual ""
+  True
+  (isRoundTrip roundConnections "Japan"))
+
+test_isRoundTrip3 = TestCase (assertEqual ""
+  False
+  (isRoundTrip completeConnections "Austria"))
+
+test_isRoundTrip4 = TestCase (assertEqual ""
+  False
+  (isRoundTrip connections "Austria"))
+
 
 -- the first 22 lucky numbers, according to wikipedia
 lucky_numbers_22 = [3, 7, 9, 13, 15, 21, 25, 31, 33, 37, 43, 49, 51, 63, 67, 69, 73, 75, 79, 87, 93, 99]
@@ -57,6 +98,14 @@ test_luckynums_isTwinLuckyNumber = TestCase (assertEqual ""
         else False | n <- [1..98]]))
 
 tests = TestList [
+  TestLabel "test_yieldUnreachable1" test_yieldUnreachable1,
+  TestLabel "test_yieldUnreachable2" test_yieldUnreachable2,
+  TestLabel "test_yieldGroundReachable1" test_yieldGroundReachable1,
+  TestLabel "test_yieldGroundReachable2" test_yieldGroundReachable2,
+  TestLabel "test_isRoundTrip1 singleton list" test_isRoundTrip1,
+  TestLabel "test_isRoundTrip2" test_isRoundTrip2,
+  TestLabel "test_isRoundTrip3" test_isRoundTrip3,
+  TestLabel "test_isRoundTrip4" test_isRoundTrip4,
   TestLabel "luckyNumbers take 22" test_luckynums_take22,
   TestLabel "isLuckyNumbers" test_luckynums_isLuckyNumber,
   TestLabel "test_luckynums_yieldLuckyNumbers" test_luckynums_yieldLuckyNumbers,
