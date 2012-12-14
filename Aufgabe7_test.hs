@@ -85,6 +85,10 @@ test_sort_dbj = TestCase (assertEqual ""
             (sort_dbj db) )
 
 
+test_sort_dbj2 = let 
+  db = [("T","r",["A","B"],j,Thriller,11)|j<-[1999,1998..1940]]
+  in TestCase (assertEqual "" db (sort_dbj db))
+
 
 db_genre = [
     ("Comedy M1", "Res A", [], 1999, Comedy, 10),
@@ -114,7 +118,8 @@ tests = TestList [TestLabel "Test 1" test1, TestLabel "Test 2" test2,
                   TestLabel "upd_dbgri" test_dbgri1, TestLabel "upd_dbgri" test_dbgri2,
                   TestLabel "upd_dbad" test_upd_dbad1, TestLabel "upd_dbad" test_upd_dbad2,
                   TestLabel "get_dbda" test_dbda1, TestLabel "get_dbda" test_dbda2,
-                  TestLabel "sort_dbj" test_sort_dbj, TestLabel "sort_dbgr" test_sort_dbgr]
+                  TestLabel "sort_dbj" test_sort_dbj, TestLabel "sort_dbj2" test_sort_dbj2,
+                  TestLabel "sort_dbgr" test_sort_dbgr]
 
 calc :: [Operators] -> [Integer] -> Integer
 calc ops (n:ns) = calc' ops ns n
