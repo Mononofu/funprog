@@ -5,6 +5,7 @@ import Test.QuickCheck
 import Test.QuickCheck.All
 import Control.Monad (liftM3, forM)
 import Data.Maybe
+import Data.List (sort)
 
 import Aufgabe9
 
@@ -41,21 +42,21 @@ getIternaryTime (Route (_, time)) = time
 getIternaryTime _ = 0
 
 test_yieldUnreachable1 = TestCase (assertEqual ""
-  ["Canada", "US"]
-  (yieldUnreachable connections "Austria"))
+  (sort ["Canada", "US"])
+  (sort (yieldUnreachable connections "Austria")))
 
 test_yieldUnreachable2 = TestCase (assertEqual ""
-  ["Austria","Germany","Spain","UK","Hungary","Bulgaria","Romania"]
-  (yieldUnreachable connections "US"))
+  (sort ["Austria","Germany","Spain","UK","Hungary","Bulgaria","Romania"])
+  (sort (yieldUnreachable connections "US")))
 
 -- assuming that the start country should be part of the reachable list too
 test_yieldGroundReachable1 = TestCase (assertEqual ""
-  ["Austria","Germany","Hungary","Romania","Bulgaria"]
-  (yieldGroundReachable connections "Austria"))
+  (sort ["Austria","Germany","Hungary","Romania","Bulgaria"])
+  (sort (yieldGroundReachable connections "Austria")))
 
 test_yieldGroundReachable2 = TestCase (assertEqual ""
-  ["Canada","US"]
-  (yieldGroundReachable connections "US"))
+  (sort ["Canada","US"])
+  (sort (yieldGroundReachable connections "US")))
 
 
 test_isRoundTrip1 = TestCase (assertEqual ""
