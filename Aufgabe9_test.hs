@@ -60,7 +60,7 @@ test_yieldGroundReachable2 = TestCase (assertEqual ""
 test_yieldCompleteTrips1 = TestCase (assertEqual ""
     (sort [Route ([Air "Japan" "China" 1, Air "China" "India" 1], 2),
         Route ([Air "India" "Japan" 1, Air "China" "India" 1], 2)])
-    (sort (yieldCompleteTrips  [Air "Japan" "China" 1, Air "China" "India" 1, Air "India" "Japan" 1] "Japan")))
+    (yieldCompleteTrips  [Air "Japan" "China" 1, Air "China" "India" 1, Air "India" "Japan" 1] "Japan"))
 
 test_yieldCompleteTrips2 = TestCase (assertEqual ""
     ([NoRoute])
@@ -73,7 +73,7 @@ test_yieldCompleteTrips3 = TestCase (assertEqual ""
 test_yieldCompleteTrips4 = TestCase (assertEqual ""
     (sort ([Route ([Air "Australia" "Japan" 5,Air "India" "Australia" 8,Air "China" "India" 10],23),
         Route ([Air "China" "Japan" 3,Air "China" "India" 10,Air "India" "Australia" 8],21)]))
-    (sort (yieldCompleteTrips  roundConnections "Japan")))
+    (yieldCompleteTrips  roundConnections "Japan"))
 
 test_isRoundTrip1 = TestCase (assertEqual ""
   True
