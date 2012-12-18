@@ -48,7 +48,6 @@ test_yieldUnreachable1 = TestCase (assertEqual ""
 test_yieldUnreachable2 = TestCase (assertEqual ""
   (sort ["Austria","Germany","Spain","UK","Hungary","Bulgaria","Romania"])
   (sort (yieldUnreachable connections "US")))
-
 -- assuming that the start country should be part of the reachable list too
 test_yieldGroundReachable1 = TestCase (assertEqual ""
   (sort ["Austria","Germany","Hungary","Romania","Bulgaria"])
@@ -58,6 +57,23 @@ test_yieldGroundReachable2 = TestCase (assertEqual ""
   (sort ["Canada","US"])
   (sort (yieldGroundReachable connections "US")))
 
+test_yieldCompleteTrips1 = TestCase (assertEqual ""
+    (sort [Route ([Air "Japan" "China" 1, Air "China" "India" 1], 2),
+        Route ([Air "India" "Japan" 1, Air "China" "India" 1], 2)])
+    (yieldCompleteTrips  [Air "Japan" "China" 1, Air "China" "India" 1, Air "India" "Japan" 1] "Japan"))
+
+test_yieldCompleteTrips2 = TestCase (assertEqual ""
+    ([NoRoute])
+    (yieldCompleteTrips  [Air "Japan" "China" 1, Air "India" "Japan" 1] "Japan"))
+
+test_yieldCompleteTrips3 = TestCase (assertEqual ""
+    ([NoRoute])
+    (yieldCompleteTrips  [Air "Japan" "China" 1, Air "India" "Japan" 1] "Austria"))
+
+test_yieldCompleteTrips4 = TestCase (assertEqual ""
+    ([Route ([Air "Australia" "Japan" 5,Air "India" "Australia" 8,Air "China" "India" 10],23),
+        Route ([Air "China" "Japan" 3,Air "China" "India" 10,Air "India" "Australia" 8],21)])
+    (yieldCompleteTrips  roundConnections "Japan"))
 
 test_isRoundTrip1 = TestCase (assertEqual ""
   True
@@ -103,6 +119,10 @@ tests = TestList [
   TestLabel "test_yieldUnreachable2" test_yieldUnreachable2,
   TestLabel "test_yieldGroundReachable1" test_yieldGroundReachable1,
   TestLabel "test_yieldGroundReachable2" test_yieldGroundReachable2,
+  TestLabel "test_yieldCompleteTrips1" test_yieldCompleteTrips1,
+  TestLabel "test_yieldCompleteTrips2" test_yieldCompleteTrips2,
+  TestLabel "test_yieldCompleteTrips3" test_yieldCompleteTrips3,
+  TestLabel "test_yieldCompleteTrips4" test_yieldCompleteTrips4,
   TestLabel "test_isRoundTrip1 singleton list" test_isRoundTrip1,
   TestLabel "test_isRoundTrip2" test_isRoundTrip2,
   TestLabel "test_isRoundTrip3" test_isRoundTrip3,
