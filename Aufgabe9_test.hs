@@ -139,6 +139,60 @@ prop_yieldLuckyNumbers m n
     nums  -> head nums >= m && last nums <= n
   where nums = yieldLuckyNumbers m n
 
+
+-- official test cases
+
+test_off_groundReachable = let m=7;q[]=[];q(e:l)=q[i|i<-l,i<e]++(e:q[i|i<-l,i>e]);r=[1..m];g=[Road(show i)(show j)1|i<-r,j<-[i+2],j<=m]
+  in TestCase (assertEqual ""
+      ["1","3","5","7"] 
+      (q("1":yieldGroundReachable g "1"))
+    )
+
+test_off_groundReachable2 = let m=11;q[]=[];q(e:l)=q[i|i<-l,i<e]++(e:q[i|i<-l,i>e]);r=[1..m];g=[Road(show i)(show j)1|i<-r,j<-[i+2],j<=m]
+  in TestCase (assertEqual ""
+    ["1","11","3","5","7","9"] 
+    (q("1":yieldGroundReachable g "1"))
+  )
+
+test_off_unreachable = let m=11;q[]=[];q(e:l)=q[i|i<-l,i<e]++(e:q[i|i<-l,i>e]);r=[1..m];g=[Road(show i)(show j)1|i<-r,j<-[i+2],j<=m]
+  in TestCase (assertEqual ""
+    ["10","2","4","6","8"] 
+    ((q.yieldUnreachable g)"1")
+    )
+
+test_off_reachable = let m=17;q[]=[];q(e:l)=q[i|i<-l,i<e]++(e:q[i|i<-l,i>e]);r=[1..m];g=[Road(show i)(show j)1|i<-r,j<-[i+2],j<=m]
+  in TestCase (assertEqual ""
+    ((q.yieldUnreachable g)"1")
+    (q("2":yieldGroundReachable g "2"))
+  )
+
+test_off_reachable2 = let m=20;q[]=[];q(e:l)=q[i|i<-l,i<e]++(e:q[i|i<-l,i>e]);r=[1..m];g=[Road(show i)(show j)1|i<-r,j<-[i+2],j<=m]
+  in TestCase (assertEqual ""
+    ((q.yieldUnreachable g)"1" )
+    (q("2":yieldGroundReachable g "2"))
+  )
+
+test_completeTrips = let m=11;r=[1..m];g=(Road "1" "2"1):[Road(show i)(show j)1|i<-r,j<-[i+2],j<=m]
+  in TestCase (assertEqual ""
+    [NoRoute] 
+    (yieldCompleteTrips g "1")
+    )
+
+officalTests = TestList [
+  TestLabel "test_off_groundReachable" test_off_groundReachable,
+  TestLabel "test_off_groundReachable2" test_off_groundReachable2,
+  TestLabel "test_off_unreachable" test_off_unreachable,
+  TestLabel "test_off_reachable" test_off_reachable,
+  TestLabel "test_off_reachable2" test_off_reachable2,
+  TestLabel "test_completeTrips" test_completeTrips
+  ]
+
+
+
 main = do
   $(quickCheckAll)
   runTestTT tests
+  runTestTT officalTests
+
+
+
